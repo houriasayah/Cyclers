@@ -39,7 +39,7 @@ part_of_day <- function(hour, filter_type) {
     } else {
       return('Night (21-5:59)')
     }
-  # Plus de détails en voyant par regroupement d'heures
+    # Plus de détails en voyant par regroupement d'heures
   } else if (filter_type == "More detailed") {
     if (hour >= 0 & hour <= 5) {
       return('0-5:59')
@@ -56,7 +56,7 @@ part_of_day <- function(hour, filter_type) {
     } else {
       return('20-23:59')
     }
-  # Par heure
+    # Par heure
   } else if (filter_type == "Per hour") {
     if (hour >= 0 & hour < 1) {
       return('0-00:59')
@@ -172,15 +172,15 @@ server <- function(input, output) {
     } else {
       # Palette qualitative car variable type de transport nominale
       color_palettes <- list(
-        c("#e41a1c"),
-        c("#e41a1c", "#4daf4a"),
-        c("#e41a1c", "#4daf4a", "#377eb8"),
-        c("#e41a1c", "#4daf4a", "#377eb8", "#984ea3"),
-        c("#e41a1c", "#4daf4a", "#377eb8", "#984ea3", "#ff7f00"),
-        c("#e41a1c", "#4daf4a", "#377eb8", "#984ea3", "#ff7f00", "#ffff33"),
-        c("#e41a1c", "#4daf4a", "#377eb8", "#984ea3", "#ff7f00", "#ffff33", "#a65628"),
-        c("#e41a1c", "#4daf4a", "#377eb8", "#984ea3", "#ff7f00", "#ffff33", "#a65628", "#f781bf"),
-        c("#e41a1c", "#4daf4a", "#377eb8", "#984ea3", "#ff7f00", "#ffff33", "#a65628", "#f781bf", "#999999")
+        c("#8dd3c7"),
+        c("#8dd3c7", "#ffffb3"),
+        c("#8dd3c7", "#ffffb3", "#bebada"),
+        c("#8dd3c7", "#ffffb3", "#bebada", "#fb8072"),
+        c("#8dd3c7", "#ffffb3", "#bebada", "#fb8072", "#80b1d3"),
+        c("#8dd3c7", "#ffffb3", "#bebada", "#fb8072", "#80b1d3", "#fdb462"),
+        c("#8dd3c7", "#ffffb3", "#bebada", "#fb8072", "#80b1d3", "#fdb462", "#b3de69"),
+        c("#8dd3c7", "#ffffb3", "#bebada", "#fb8072", "#80b1d3", "#fdb462", "#b3de69", "#fccde5"),
+        c("#8dd3c7", "#ffffb3", "#bebada", "#fb8072", "#80b1d3", "#fdb462", "#b3de69", "#fccde5", "#d9d9d9")
       )
       
       # Filtrer les données selon la sélection de l'utilisateur
@@ -217,16 +217,24 @@ server <- function(input, output) {
         plot_0_to_12 <- ggplot(filtered_data_0_to_12, aes(x = part_of_day, y = distance_y, fill = subtrip_type)) +
           geom_bar(stat = "identity", position = position_dodge()) +
           scale_fill_manual(values = selected_palette) +
-          theme(axis.text.x = element_text(angle = 45, hjust = 1),
-                legend.position = "bottom") +
+          theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 13),
+                axis.text.y = element_text(size = 13),
+                axis.title.x = element_text(size = 16),
+                axis.title.y = element_text(size = 16),
+                legend.position = "bottom",
+                panel.background = element_rect(fill = "white")) +
           labs(x = "Part of Day", y = "Total Distance Covered (km)", fill = "Type of Transport") +
           ggtitle("0 to 12 Hours")
         
         plot_13_to_23 <- ggplot(filtered_data_13_to_23, aes(x = part_of_day, y = distance_y, fill = subtrip_type)) +
           geom_bar(stat = "identity", position = position_dodge()) +
           scale_fill_manual(values = selected_palette) +
-          theme(axis.text.x = element_text(angle = 45, hjust = 1),
-                legend.position = "bottom") + 
+          theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 13),
+                axis.text.y = element_text(size = 13),
+                axis.title.x = element_text(size = 16),
+                axis.title.y = element_text(size = 16),
+                legend.position = "bottom",
+                panel.background = element_rect(fill = "white")) +
           labs(x = "Part of Day", y = "Total Distance Covered (km)", fill = "Type of Transport") +
           ggtitle("13 to 23 Hours")
         
@@ -243,8 +251,12 @@ server <- function(input, output) {
         ggplot(filtered_data, aes(x = part_of_day, y = distance_y, fill = subtrip_type)) +
           geom_bar(stat = "identity", position = position_dodge()) +
           scale_fill_manual(values = selected_palette) +
-          theme(axis.text.x = element_text(angle = 45, hjust = 1),
-                legend.position = "bottom") +
+          theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 13),
+                axis.text.y = element_text(size = 13),
+                axis.title.x = element_text(size = 16),
+                axis.title.y = element_text(size = 16),
+                legend.position = "bottom",
+                panel.background = element_rect(fill = "white")) +
           labs(x = "Part of Day", y = "Total Distance Covered (km)", fill = "Type of Transport")
       }
     }
@@ -253,3 +265,4 @@ server <- function(input, output) {
 
 # Lancer l'application
 shinyApp(ui = ui, server = server)
+
