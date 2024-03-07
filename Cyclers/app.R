@@ -372,7 +372,7 @@ server <- function(input, output, session) {
     set.seed(123) # Pour la reproductibilité
     cluster_final_scale <- scale(cluster_final_reduced, center = TRUE, scale = TRUE)
     wss <- sapply(1:10, function(k) {kmeans(cluster_final_reduced, k, nstart = 10)$tot.withinss})
-    plot(1:10, wss, type = "b", pch = 19, xlab = "Nombre de clusters", ylab = "Somme des carrés intra-clusters")
+    plot(1:10, wss, type = "b", pch = 19, xlab = "Nombre de clusters", ylab = "Somme des carrés intra-classes")
   })
   
   # Ajustement des marges pour afficher le graphique (trop grand)
