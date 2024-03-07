@@ -387,7 +387,7 @@ server <- function(input, output, session) {
     x_index <- match(input$x_axis, c("1", "2", "3"))
     y_index <- match(input$y_axis, c("1", "2", "3"))
     fviz_cluster(kmeans_result, data = cluster_final, geom = "point", 
-                 stand = TRUE, ellipse = TRUE, ellipse.type = "norm", axes = c(x_index, y_index))
+                 stand = TRUE, ellipse = TRUE, ellipse.type = "norm", axes = c(x_index, y_index),palette = "Set3")
   })
   
   
