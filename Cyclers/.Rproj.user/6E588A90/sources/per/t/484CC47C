@@ -1,0 +1,27 @@
+{
+    "id": "484CC47C",
+    "path": "~/Cyclers/app.R",
+    "project_path": "app.R",
+    "type": "r_source",
+    "hash": "1249057133",
+    "contents": "",
+    "dirty": false,
+    "created": 1709716404792.0,
+    "source_on_save": false,
+    "relative_order": 1,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "241,27",
+        "scrollLine": "236",
+        "docOutlineVisible": "0"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1709839492,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1709839492112,
+    "read_only": false,
+    "read_only_alternatives": []
+}
