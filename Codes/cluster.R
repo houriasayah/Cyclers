@@ -20,7 +20,7 @@ plot(1:10, wss, type="b", pch = 19, xlab="Nombre de clusters", ylab="Somme des c
 
 set.seed(123)
 data_final_scale <- scale(data_final_reduced,center = TRUE,scale = TRUE)
-k <- 3 # Remplacez par le nombre de clusters choisi
+k <- 10 # Remplacez par le nombre de clusters choisi
 kmeans_result <- kmeans(data_final_scale, centers = k, nstart = 10)
 # Afficher les résultats
 print(kmeans_result$size) # Taille des clusters
@@ -39,6 +39,10 @@ fviz_cluster(kmeans_result, data = data_final, geom = "point",
 library(tidyverse)
 
 data_final$cluster <- kmeans_result$cluster
+data_final$subtrip_type <- data$subtrip_type
+
+
+####################################################################################################
 data_final %>%
   group_by(cluster)%>%
   summarise(moy=mean(avg_speed))
@@ -47,13 +51,54 @@ pivot_longer(data = data_final,cols = c("avg_speed","distance_x","duration_secon
   ggplot(aes( as.factor(cluster),Valeurs ))+
   geom_boxplot()+facet_wrap("Type",scales = "free_y")
 
-data_final$subtrip_type <- data$subtrip_type
 library(ggplot2)
 
 ggplot(data_final, aes(x = cluster, fill = subtrip_type)) +
-  geom_bar(position = "dodge") +
+  geom_bar(position = "dodge",width = 0.75) +
   theme_minimal() +
   labs(title = "Distribution des clusters par type de transport",
        x = "Cluster",
        y = "Nombre d'observations",
        fill = "Type de Transport")
+# Assurez-vous que les packages nécessaires sont chargés
+library(dplyr)
+library(ggplot2)
+library(RColorBrewer)
+
+
+# Calcul des fréquences pour chaque combinaison de cluster et de subtrip_type
+freq_data <- data_final %>%
+  group_by(cluster, subtrip_type) %>%
+  summarise(freq = n()) %>%
+  mutate(freq_pct = freq / sum(freq)) %>%
+  ungroup() %>%
+  arrange(cluster, desc(freq))
+
+# Nombre de clusters
+color_palette <- brewer.pal(n = length(unique(data_final$subtrip_type)), name = "Set3")
+
+# Boucle pour générer un rapport pour chaque cluster
+for (i in 1:k) {
+  # Filtrer les données pour le cluster courant
+  cluster_data <- freq_data[freq_data$cluster == i, ]
+  
+  # Calculer la fréquence des observations par type de transport pour le cluster courant
+  freq_summary <- aggregate(freq ~ subtrip_type, data = cluster_data, sum)
+  
+  # Afficher le rapport pour le cluster courant
+  print(paste("Rapport pour le cluster:", i))
+  print(freq_summary)
+  
+  # Création du graphique ggplot
+  p<- ggplot(cluster_data, aes(x = subtrip_type, y = freq, fill = subtrip_type)) +
+    geom_bar(stat = "identity", position = position_dodge(preserve = "single"),width = 0.75) +
+    theme_minimal() +scale_fill_manual(values = color_palette) + # Utilisation de la palette de couleurs
+    labs(title = "Distribution des clusters par type de transport",
+         x = "Cluster",
+         y = "Fréquence des observations",
+         fill = "Type de Transport")
+  
+  print(p)
+}
+
+
