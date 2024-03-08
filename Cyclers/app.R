@@ -82,7 +82,7 @@ trip_subtrip_coherent$duration_x <- as_hms(trip_subtrip_coherent$duration_second
 
 
 # Définition des couleurs
-my_colors <- c("#8dd3c7", "#ffffb3", "#bebada", "#fb8072", "#80b1d3", "#fdb462", "#b3de69", "#fccde5", "#d9d9d9")
+my_colors <- c("Biking" = "#8dd3c7", "CarElectric"="#ffffb3", "BikeElectric"="#bebada", "Bus"="#fb8072", "Metro"="#80b1d3", "MotoElectric"= "#fdb462", "Scooter"="#b3de69","Walking"= "#fccde5","Train"= "#d9d9d9")
 
 # Interface utilisateur
 ui <- dashboardPage(
@@ -418,7 +418,9 @@ server <- function(input, output, session) {
       ungroup() %>%
       arrange(cluster, desc(freq))
     
-    color_palette <- brewer.pal(n = length(unique(cluster_final$subtrip_type)), name = "Set3")
+    # Assurez-vous d'avoir le vecteur de couleurs correct pour vos types de transport
+    custom_colors <-c("Biking" = "#8dd3c7", "CarElectric"="#ffffb3", "BikeElectric"="#bebada", "Bus"="#fb8072", "Metro"="#80b1d3", "MotoElectric"= "#fdb462", "Scooter"="#b3de69","Walking"= "#fccde5","Train"= "#d9d9d9")
+
     
     for (i in 1:input$k) {
       local({
@@ -431,7 +433,7 @@ server <- function(input, output, session) {
           ggplot(cluster_data, aes(x = subtrip_type, y = freq, fill = subtrip_type)) +
             geom_bar(stat = "identity", position = position_dodge(preserve = "single"), width = 0.75) +
             theme_minimal() +
-            scale_fill_manual(values = color_palette) +
+            scale_fill_manual(values = custom_colors) + # Utilisez ici le vecteur de couleurs personnalisées
             labs(title = paste("Cluster", local_i, "Distribution par Type de Transport"),
                  x = "Type de Transport",
                  y = "Fréquence",
@@ -440,6 +442,7 @@ server <- function(input, output, session) {
       })
     }
   })
+  
   
   
   output$descripPlot <- renderPlot({
